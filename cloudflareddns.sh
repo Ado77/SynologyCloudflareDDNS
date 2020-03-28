@@ -13,8 +13,8 @@ __LOGFILE__="/var/log/cloudflareddns.log"
 __RECTYPE__="A"
 __RECID__=""
 __ZONE_ID__=""
-__TTL__="1"
-__PROXY__="true"
+__TTL__=1
+__PROXY__="false"
 
 log() {
     __LOGTIME__=$(date +"%b %e %T")
@@ -38,9 +38,8 @@ __URL__="https://api.cloudflare.com/client/v4/zones/${__ZONE_ID__}/dns_records/$
 # Update DNS record:
 log "Updating with ${__MYIP__}..."
 __RESPONSE__=$(curl -s -X PUT "${__URL__}" \
-     -H "X-Auth-Email: ${__USERNAME__}" \
-     -H "X-Auth-Key: ${__PASSWORD__}" \
      -H "Content-Type: application/json" \
+         -H "Authorization: bearer ${__PASSWORD__}" \
      --data "{\"type\":\"${__RECTYPE__}\",\"name\":\"${__HOSTNAME__}\",\"content\":\"${__MYIP__}\",\"ttl\":${__TTL__},\"proxied\":${__PROXY__}}")
 
 # Strip the result element from response json
